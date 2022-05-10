@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mesto</title>
+	<link rel="stylesheet" href="./pages/index.css">
+</head>
+<body class="page">
+	<div class="page__container">
+
+		<header class="header">
+			<img 
+				src="./images/logo.svg" 
+				alt="логотип проекта Место" 
+				class="logo">
+		</header>
+
+		<main class="content">
+
+			<section class="profile">
+				<img 
+					src="./images/image-profile.png" 
+					alt="Жак-Ив Кусто в красной вязанной шапке на фоне океана." 
+					class="profile__avatar">
+				<div class="profile__info">
+					<h1 class="profile__name overflow-hidden">Жак-Ив Кусто</h1>
+					<button class="profile__edit-btn"></button>
+					<p class="profile__activity overflow-hidden">Исследователь океана</p>
+				</div>
+				<button class="profile__add-btn"></button>
+			</section>
+
+			<section class="cards">
+				<article class="card">
+					<img 
+						src="./images/dombay.png" 
+						alt="На заднем плане вершина горы, частично покрытая снегом, на переднем - хвойный лес на склоне горы." 
+						class="card__image">
+					<div class="card__group">
+						<p class="card__description overflow-hidden">Домбай</p>
+						<div class="card__icon"></div>
+					</div>	
+				</article>
+				<article class="card">
+					<img 
+						src="./images/karachaevo-cherkesiya.png" 
+						alt="Сентинский храм на фоне горного леса." 
+						class="card__image">
+					<div class="card__group">
+						<p class="card__description overflow-hidden">Карачаево-Черкесия</p>
+						<div class="card__icon"></div>
+					</div>	
+				</article>
+				<article class="card">
+					<img 
+						src="./images/Kazan.jpg" 
+						alt="Мечеть Кул Шариф на фоне закатного облачного неба." 
+						class="card__image">
+					<div class="card__group">
+						<p class="card__description overflow-hidden">Казань</p>
+						<div class="card__icon"></div>
+					</div>	
+				</article>
+				<article class="card">
+					<img 
+						src="./images/Lastochkino-gnezdo.jpg" 
+						alt="Готический замок на краю скалы, на заднем плане море и облачное небо." 
+						class="card__image">
+					<div class="card__group">
+						<p class="card__description overflow-hidden">Ласточкино гнездо</p>
+						<div class="card__icon"></div>
+					</div>	
+				</article>
+				<article class="card">
+					<img 
+						src="./images/Tula-kremlin.jpg" 
+						alt="На заднем плане круглая кремлевская башня с конической деревянной крышей, на переднем - несколько деревянных срубов осадного двора." 
+						class="card__image">
+					<div class="card__group">
+						<p class="card__description overflow-hidden">Тульский кремль</p>
+						<div class="card__icon"></div>
+					</div>	
+				</article>
+				<article class="card">
+					<img 
+						src="./images/Vilyuchinsky-volcano.jpg" 
+						alt="На фоне серого неба гора, на склонах и на вершине которой местами лежит снег." 
+						class="card__image">
+					<div class="card__group">
+						<p class="card__description overflow-hidden">Вилючинская Сопка</p>
+						<div class="card__icon"></div>
+					</div>	
+				</article>	
+			</section>
+
+		</main>
+
+		<footer class="footer">
+			&copy; 2022 Mesto Russia
+		</footer>
+
+		<div class="popup">
+			<div class="popup__container">
+				<form class="form">
+					<h2 class="form__heading">Редактировать профиль</h2>
+					<fieldset class="form__inputs">
+						<input 
+							class="form__item form__item_el_name" 
+							type="text" 
+							placeholder="Жак-Ив Кусто">
+						<input 
+							class="form__item form__item_el_activity" 
+							type="text" 
+							placeholder="Исследователь океана">
+					</fieldset>
+					<fieldset class="form__handlers">
+						<button class="form__button" type="submit">Сохранить</button>
+					</fieldset>
+				</form>
+				<div class="popup__close-btn"></div>
+			</div>
+		</div>
+
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>
