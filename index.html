@@ -26,10 +26,10 @@
 					class="profile__avatar">
 				<div class="profile__info">
 					<h1 class="profile__name overflow-hidden">Жак-Ив Кусто</h1>
-					<button class="profile__edit-btn"></button>
+					<button class="profile__edit-btn" type="button"></button>
 					<p class="profile__activity overflow-hidden">Исследователь океана</p>
 				</div>
-				<button class="profile__add-btn"></button>
+				<button class="profile__add-btn" type="button"></button>
 			</section>
 
 			<section class="cards">
@@ -40,7 +40,7 @@
 						class="card__image">
 					<div class="card__group">
 						<p class="card__description overflow-hidden">Домбай</p>
-						<div class="card__icon"></div>
+						<button class="card__icon" type="button"></button>
 					</div>	
 				</article>
 				<article class="card">
@@ -50,7 +50,7 @@
 						class="card__image">
 					<div class="card__group">
 						<p class="card__description overflow-hidden">Карачаево-Черкесия</p>
-						<div class="card__icon"></div>
+						<button class="card__icon" type="button"></button>
 					</div>	
 				</article>
 				<article class="card">
@@ -60,7 +60,7 @@
 						class="card__image">
 					<div class="card__group">
 						<p class="card__description overflow-hidden">Казань</p>
-						<div class="card__icon"></div>
+						<button class="card__icon" type="button"></button>
 					</div>	
 				</article>
 				<article class="card">
@@ -70,7 +70,7 @@
 						class="card__image">
 					<div class="card__group">
 						<p class="card__description overflow-hidden">Ласточкино гнездо</p>
-						<div class="card__icon"></div>
+						<button class="card__icon" type="button"></button>
 					</div>	
 				</article>
 				<article class="card">
@@ -80,7 +80,7 @@
 						class="card__image">
 					<div class="card__group">
 						<p class="card__description overflow-hidden">Тульский кремль</p>
-						<div class="card__icon"></div>
+						<button class="card__icon" type="button"></button>
 					</div>	
 				</article>
 				<article class="card">
@@ -90,7 +90,7 @@
 						class="card__image">
 					<div class="card__group">
 						<p class="card__description overflow-hidden">Вилючинская Сопка</p>
-						<div class="card__icon"></div>
+						<button class="card__icon" type="button"></button>
 					</div>	
 				</article>	
 			</section>
@@ -98,20 +98,24 @@
 		</main>
 
 		<footer class="footer">
-			&copy; 2022 Mesto Russia
+			<p class="footer__copyright">
+				&copy; 2022 Mesto Russia
+			</p>
 		</footer>
 
 		<div class="popup">
 			<div class="popup__container">
-				<form class="form">
+				<form class="form" name="popup-form" method="post">
 					<h2 class="form__heading">Редактировать профиль</h2>
 					<fieldset class="form__inputs">
 						<input 
 							class="form__item form__item_el_name" 
+							name="user-name"
 							type="text" 
 							placeholder="Жак-Ив Кусто">
 						<input 
 							class="form__item form__item_el_activity" 
+							name="user-activity"
 							type="text" 
 							placeholder="Исследователь океана">
 					</fieldset>
@@ -119,11 +123,11 @@
 						<button class="form__button" type="submit">Сохранить</button>
 					</fieldset>
 				</form>
-				<div class="popup__close-btn"></div>
+				<button class="popup__close-btn" type="button"></button>
 			</div>
 		</div>
 
 	</div>
-	<script src="script.js"></script>
+	<script src="./scripts/index.js"></script>
 </body>
 </html>
