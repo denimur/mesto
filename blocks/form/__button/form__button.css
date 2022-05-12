@@ -19,6 +19,7 @@
 
 @media (max-width: 768px) {
 	.form__button {
+		height: 46px;
 		font-size: 14px;
 		line-height: 1.21;
 	}
