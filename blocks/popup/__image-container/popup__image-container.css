@@ -1,0 +1,6 @@
+.popup__image-container {
+	background-color: #eee;
+	margin: auto;
+	display: flex;
+	position: relative;
+}

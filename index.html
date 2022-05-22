@@ -32,67 +32,7 @@
 				<button class="profile__add-btn" type="button"></button>
 			</section>
 
-			<section class="cards">
-				<article class="card">
-					<img 
-						src="./images/dombay.png" 
-						alt="На заднем плане вершина горы, частично покрытая снегом, на переднем - хвойный лес на склоне горы." 
-						class="card__image">
-					<div class="card__group">
-						<p class="card__description overflow-hidden">Домбай</p>
-						<button class="card__icon" type="button"></button>
-					</div>	
-				</article>
-				<article class="card">
-					<img 
-						src="./images/karachaevo-cherkesiya.png" 
-						alt="Сентинский храм на фоне горного леса." 
-						class="card__image">
-					<div class="card__group">
-						<p class="card__description overflow-hidden">Карачаево-Черкесия</p>
-						<button class="card__icon" type="button"></button>
-					</div>	
-				</article>
-				<article class="card">
-					<img 
-						src="./images/Kazan.jpg" 
-						alt="Мечеть Кул Шариф на фоне закатного облачного неба." 
-						class="card__image">
-					<div class="card__group">
-						<p class="card__description overflow-hidden">Казань</p>
-						<button class="card__icon" type="button"></button>
-					</div>	
-				</article>
-				<article class="card">
-					<img 
-						src="./images/Lastochkino-gnezdo.jpg" 
-						alt="Готический замок на краю скалы, на заднем плане море и облачное небо." 
-						class="card__image">
-					<div class="card__group">
-						<p class="card__description overflow-hidden">Ласточкино гнездо</p>
-						<button class="card__icon" type="button"></button>
-					</div>	
-				</article>
-				<article class="card">
-					<img 
-						src="./images/Tula-kremlin.jpg" 
-						alt="На заднем плане круглая кремлевская башня с конической деревянной крышей, на переднем - несколько деревянных срубов осадного двора." 
-						class="card__image">
-					<div class="card__group">
-						<p class="card__description overflow-hidden">Тульский кремль</p>
-						<button class="card__icon" type="button"></button>
-					</div>	
-				</article>
-				<article class="card">
-					<img 
-						src="./images/Vilyuchinsky-volcano.jpg" 
-						alt="На фоне серого неба гора, на склонах и на вершине которой местами лежит снег." 
-						class="card__image">
-					<div class="card__group">
-						<p class="card__description overflow-hidden">Вилючинская Сопка</p>
-						<button class="card__icon" type="button"></button>
-					</div>	
-				</article>	
+			<section class="cards">	
 			</section>
 
 		</main>
@@ -103,29 +43,77 @@
 			</p>
 		</footer>
 
-		<div class="popup">
+		<div class="popup popup_type_image">
+			<div class="popup__image-container">
+				<img class="popup__image" src="" alt="">
+				<p class="popup__image-description"></p>
+				<button class="popup__close-btn popup__close-btn_place_image" type="button"></button>
+			</div>
+		</div>		
+
+		<div class="popup popup_type_user">
 			<div class="popup__container">
-				<form class="form" name="popup-form" method="post">
+				<form class="form form_type_user" name="popup-form" method="post">
 					<h2 class="form__heading">Редактировать профиль</h2>
 					<fieldset class="form__inputs">
 						<input 
-							class="form__item form__item_el_name" 
+							class="form__item form__item_el_user-name" 
 							name="user-name"
 							type="text" 
-							placeholder="Жак-Ив Кусто">
+							>
 						<input 
-							class="form__item form__item_el_activity" 
+							class="form__item form__item_el_user-activity" 
 							name="user-activity"
 							type="text" 
-							placeholder="Исследователь океана">
+							>
 					</fieldset>
 					<fieldset class="form__handlers">
 						<button class="form__button" type="submit">Сохранить</button>
 					</fieldset>
 				</form>
-				<button class="popup__close-btn" type="button"></button>
+				<button class="popup__close-btn popup__close-btn_place_user" type="button"></button>
 			</div>
 		</div>
+
+		<div class="popup popup_type_card">
+			<div class="popup__container">
+				<form class="form form_type_card" name="popup-form" method="post">
+					<h2 class="form__heading">Новое место</h2>
+					<fieldset class="form__inputs">
+						<input 
+							class="form__item form__item_el_card-name" 
+							name="card-name"
+							type="text" 
+							placeholder="Название"
+							>
+						<input 
+							class="form__item form__item_el_card-link" 
+							name="card-link"
+							type="text" 
+							placeholder="Ссылка на картинку"
+							>
+					</fieldset>
+					<fieldset class="form__handlers">
+						<button class="form__button" type="submit">Создать</button>
+					</fieldset>
+				</form>
+				<button class="popup__close-btn popup__close-btn_place_card" type="button"></button>
+			</div>
+		</div>
+
+		<template id="card-template">
+			<article class="card">
+				<img 
+					src="" 
+					alt="" 
+					class="card__image">
+				<div class="card__group">
+					<p class="card__description overflow-hidden"></p>
+					<button class="card__icon" type="button"></button>
+				</div>	
+				<button class="card__delete-btn" type="button"></button>
+			</article>
+		</template>
 
 	</div>
 	<script src="./scripts/index.js"></script>

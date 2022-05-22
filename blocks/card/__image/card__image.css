@@ -1,6 +1,8 @@
 .card__image {
 	width: 100%;
-	display: flex;
+	height: calc(100% - 80px);
+	display: block;
 	object-fit: cover;
 	object-position: center;
+	cursor: pointer;
 }

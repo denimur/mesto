@@ -9,6 +9,14 @@
 	line-height: 1.21;
 }
 
+.form__item:first-of-type {
+	margin-bottom: 18px;
+}
+
+.form__item:last-of-type {
+	margin-bottom: 46px;
+}
+
 .form__item:focus {
 	outline-color: #1aabee;
 }
