@@ -46,33 +46,35 @@ const cardLinkInput = cardFormElement.querySelector('.form__item_el_card-link');
 
 const cardsElement = document.querySelector('.cards');
 
-function cardDelete(evt) {
-	if (evt.target.classList.contains('card__delete-btn')) {
-		evt.target.closest('.card').remove()
-	}
-}
-
-function cardsRender(cards) {
-	cards.forEach(card => cardRender(card));
-}
-
-function cardRender(card) {
+function renderCard(card) {
 	const cardTemplate = document.querySelector('#card-template').content;
-	const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-	cardElement.querySelector('.card__image').src = card.link;
+	const cardElement = cardTemplate.querySelector('.card').cloneNode(true);	
+	const imageElement = cardElement.querySelector('.card__image');
+	imageElement.src = card.link;
+	imageElement.alt = card.name;
 	cardElement.querySelector('.card__description').textContent = card.name;
 	cardsElement.prepend(cardElement);
 }
 
-cardsRender(initialCards);
+function renderCards(cards) {
+	cards.forEach(card => renderCard(card));
+}
 
-const cardLikeHandler = evt => {
+renderCards(initialCards);
+
+const likeCardHandler = evt => {
 	if (evt.target.classList.contains('card__icon')) {
 		evt.target.classList.toggle('card__icon_active');
 	}
 }
 
-const imagePopupOpen = (evt) => {
+function deleteCard(evt) {
+	if (evt.target.classList.contains('card__delete-btn')) {
+		evt.target.closest('.card').remove()
+	}
+}
+
+const openImagePopup = (evt) => {
 	if (evt.target.classList.contains('card__image')) {
 		const card = evt.target.closest('.card')
 		imageOpen.src = evt.target.src;
@@ -81,18 +83,18 @@ const imagePopupOpen = (evt) => {
 	}
 }
 
-const userPopupOpen = () => {
+const openUserPopup = () => {
 	userPopup.classList.add('popup_opened');
 	
 	userNameInput.value = nameEl.textContent;
 	userActivityInput.value = activityEl.textContent;
 }
 
-const cardPopupOpen = () => {
+const openCardPopup = () => {
 	cardPopup.classList.add('popup_opened')
 }
 
-const popupClose = (evt) => {
+const closePopup = (evt) => {
 	if (evt.target.classList.contains('popup__close-btn')
 		|| evt.target.classList.contains('form__button')) {
 		const popup = evt.target.closest('.popup');
@@ -100,16 +102,16 @@ const popupClose = (evt) => {
 	}
 }
 
-function userFormSubmitHandler(evt) {
+function submitUserForm(evt) {
 	evt.preventDefault();
 	
 	nameEl.textContent = userNameInput.value;
 	activityEl.textContent = userActivityInput.value;
 	
-	popupClose(evt);
+	closePopup(evt);
 }
 
-function cardCreateHandler(evt) {
+function createNewCard(evt) {
 	evt.preventDefault();
 
 	let newCard = {
@@ -117,7 +119,7 @@ function cardCreateHandler(evt) {
 		link: cardLinkInput.value
 	}
 	if (newCard.link !== '' && newCard.name !== '') {
-		cardRender(newCard);
+		renderCard(newCard);
 	}
 	else {
 		cardNameInput.value = '';
@@ -127,14 +129,14 @@ function cardCreateHandler(evt) {
 
 	cardNameInput.value = '';
 	cardLinkInput.value = '';
-	popupClose(evt);
+	closePopup(evt);
 }
 
-editBtn.addEventListener('click', userPopupOpen);
-addBtn.addEventListener('click', cardPopupOpen);
-document.addEventListener('click', popupClose);
-userFormElement.addEventListener('submit', userFormSubmitHandler);
-cardFormElement.addEventListener('submit', cardCreateHandler);
-cardsElement.addEventListener('click', cardLikeHandler);
-cardsElement.addEventListener('click', cardDelete);
-cardsElement.addEventListener('click', imagePopupOpen);
+editBtn.addEventListener('click', openUserPopup);
+addBtn.addEventListener('click', openCardPopup);
+document.addEventListener('click', closePopup);
+userFormElement.addEventListener('submit', submitUserForm);
+cardFormElement.addEventListener('submit', createNewCard);
+cardsElement.addEventListener('click', likeCardHandler);
+cardsElement.addEventListener('click', deleteCard);
+cardsElement.addEventListener('click', openImagePopup);
