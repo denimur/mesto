@@ -43,11 +43,11 @@ const userNameInput = userFormElement.querySelector('.form__item_el_user-name');
 const userActivityInput = userFormElement.querySelector('.form__item_el_user-activity');
 const cardNameInput = cardFormElement.querySelector('.form__item_el_card-name'); 
 const cardLinkInput = cardFormElement.querySelector('.form__item_el_card-link');
+const cardTemplate = document.querySelector('#card-template').content;
 
 const cardsElement = document.querySelector('.cards');
 
 function renderCard(card) {
-	const cardTemplate = document.querySelector('#card-template').content;
 	const cardElement = cardTemplate.querySelector('.card').cloneNode(true);	
 	const imageElement = cardElement.querySelector('.card__image');
 	imageElement.src = card.link;
