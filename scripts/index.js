@@ -6,6 +6,7 @@ const addBtn = profileElement.querySelector('.profile__add-btn');
 const nameEl = profileElement.querySelector('.profile__name');
 const activityEl = profileElement.querySelector('.profile__activity');
 
+const popup = document.querySelectorAll('.popup');
 const userPopup = document.querySelector('.popup_type_user');
 const cardPopup = document.querySelector('.popup_type_card');
 const imagePopup = document.querySelector('.popup_type_image');
@@ -59,9 +60,25 @@ function openPopup(popup) {
 	popup.classList.add('popup_opened');
 }
 
-function closePopup(evt) {
-	const popup = evt.target.closest('.popup');
+function closePopup(popup) {
 	popup.classList.remove('popup_opened');
+}
+
+const closeBtnHandler = (evt) => {
+	const popup = evt.target.closest('.popup');
+	closePopup(popup)
+}
+
+const closePopupHandler = (evt) => {
+	if (evt.target.classList.contains('form__button')) {
+		closePopup(evt.target.closest('.popup'))
+	}
+	else if (evt.key === "Escape") {
+		closePopup(document.querySelector('.popup_opened'))
+	}
+	else if (!(evt.target.classList.contains('popup__container'))) {
+		closePopup(evt.target)
+	}
 }
 
 const openImagePopup = (evt) => {
@@ -90,7 +107,7 @@ function submitUserForm(evt) {
 	nameEl.textContent = userNameInput.value;
 	activityEl.textContent = userActivityInput.value;
 	
-	closePopup(evt);
+	closePopupHandler(evt);
 }
 
 function createNewCard(evt) {
@@ -107,12 +124,14 @@ function createNewCard(evt) {
 
 	cardNameInput.value = '';
 	cardLinkInput.value = '';
-	closePopup(evt);
+	closePopupHandler(evt);
 }
 
 editBtn.addEventListener('click', openUserPopup);
 addBtn.addEventListener('click', openCardPopup);
-closeButtons.forEach(btn => btn.addEventListener('click', closePopup));
+closeButtons.forEach(btn => btn.addEventListener('click', closeBtnHandler));
+popup.forEach(p => p.addEventListener('click', closePopupHandler))
+document.addEventListener('keydown', closePopupHandler)
 userFormElement.addEventListener('submit', submitUserForm);
 cardFormElement.addEventListener('submit', createNewCard);
 cardsElement.addEventListener('click', likeCardHandler);
