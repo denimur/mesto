@@ -56,18 +56,32 @@
 				<form class="form form_type_user" name="user-form" method="post">
 					<h2 class="form__heading">Редактировать профиль</h2>
 					<fieldset class="form__inputs">
-						<input 
-							class="form__item form__item_el_user-name" 
-							name="user-name"
-							type="text" 
-							placeholder="Жак-Ив Кусто"
+						<label class="form__field">
+							<input
+								id="user-name-input"
+								class="form__item form__item_el_user-name" 
+								name="user-name"
+								type="text" 
+								placeholder="Жак-Ив Кусто"
+								minlength="2"
+								maxlength="40"
+								required
 							>
-						<input 
-							class="form__item form__item_el_user-activity" 
-							name="user-activity"
-							type="text" 
-							placeholder="Исследователь океана"
+							<span class="name-input-error form__item-error form__item-error_active"></span>
+						</label>
+						<label class="form__field">
+							<input
+								id="user-activity-input"
+								class="form__item form__item_el_user-activity" 
+								name="user-activity"
+								type="text" 
+								placeholder="Исследователь океана"
+								minlength="2"
+								maxlength="200"
+								required
 							>
+							<span class="activity-input-error form__item-error form__item-error_active"></span>
+						</label>
 					</fieldset>
 					<fieldset class="form__handlers">
 						<button class="form__button" type="submit">Сохранить</button>
@@ -82,18 +96,30 @@
 				<form class="form form_type_card" name="card-form" method="post">
 					<h2 class="form__heading">Новое место</h2>
 					<fieldset class="form__inputs">
-						<input 
-							class="form__item form__item_el_card-name" 
-							name="card-name"
-							type="text" 
-							placeholder="Название"
+						<label class="form__field">
+							<input
+								id="card-name-input"
+								class="form__item form__item_el_card-name" 
+								name="card-name"
+								type="text" 
+								placeholder="Название"
+								minlength="2"
+								maxlength="30"
+								required
 							>
-						<input 
-							class="form__item form__item_el_card-link" 
-							name="card-link"
-							type="text" 
-							placeholder="Ссылка на картинку"
+							<span class="card-name-input-error form__item-error"></span>
+						</label>
+						<label class="form__field">
+							<input
+								id="card-link-input"
+								class="form__item form__item_el_card-link" 
+								name="card-link"
+								type="url" 
+								placeholder="Ссылка на картинку"
+								required
 							>
+							<span class="card-link-input-error form__item-error"></span>
+						</label>
 					</fieldset>
 					<fieldset class="form__handlers">
 						<button class="form__button" type="submit">Создать</button>
