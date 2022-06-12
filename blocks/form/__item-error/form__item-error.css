@@ -3,8 +3,7 @@
 	font-size: 12px;
 	line-height: 15px;
 	color: #FF0000;
-	outline: 1px solid red;
 	display: block;
-	height: 15px;
+	min-height: 30px;
 	visibility: hidden;
 }

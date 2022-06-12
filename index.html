@@ -53,34 +53,34 @@
 
 		<div class="popup popup_type_user">
 			<div class="popup__container">
-				<form class="form form_type_user" name="user-form" method="post">
+				<form class="form form_type_user" name="user-form" method="post" novalidate>
 					<h2 class="form__heading">Редактировать профиль</h2>
 					<fieldset class="form__inputs">
 						<label class="form__field">
 							<input
-								id="user-name-input"
+								id="name-input"
 								class="form__item form__item_el_user-name" 
 								name="user-name"
 								type="text" 
-								placeholder="Жак-Ив Кусто"
+								placeholder="Имя"
 								minlength="2"
 								maxlength="40"
 								required
 							>
-							<span class="name-input-error form__item-error form__item-error_active"></span>
+							<span class="name-input-error form__item-error"></span>
 						</label>
 						<label class="form__field">
 							<input
-								id="user-activity-input"
+								id="activity-input"
 								class="form__item form__item_el_user-activity" 
 								name="user-activity"
 								type="text" 
-								placeholder="Исследователь океана"
+								placeholder="О себе"
 								minlength="2"
 								maxlength="200"
 								required
 							>
-							<span class="activity-input-error form__item-error form__item-error_active"></span>
+							<span class="activity-input-error form__item-error"></span>
 						</label>
 					</fieldset>
 					<fieldset class="form__handlers">
@@ -93,12 +93,12 @@
 
 		<div class="popup popup_type_card">
 			<div class="popup__container">
-				<form class="form form_type_card" name="card-form" method="post">
+				<form class="form form_type_card" name="card-form" method="post" novalidate>
 					<h2 class="form__heading">Новое место</h2>
 					<fieldset class="form__inputs">
 						<label class="form__field">
 							<input
-								id="card-name-input"
+								id="name-input"
 								class="form__item form__item_el_card-name" 
 								name="card-name"
 								type="text" 
@@ -107,18 +107,18 @@
 								maxlength="30"
 								required
 							>
-							<span class="card-name-input-error form__item-error"></span>
+							<span class="name-input-error form__item-error"></span>
 						</label>
 						<label class="form__field">
 							<input
-								id="card-link-input"
+								id="link-input"
 								class="form__item form__item_el_card-link" 
 								name="card-link"
 								type="url" 
 								placeholder="Ссылка на картинку"
 								required
 							>
-							<span class="card-link-input-error form__item-error"></span>
+							<span class="link-input-error form__item-error"></span>
 						</label>
 					</fieldset>
 					<fieldset class="form__handlers">
@@ -141,6 +141,7 @@
 		</template>
 
 	</div>
+	<script type="module" src="./scripts/validate.js"></script>
 	<script type="module" src="./scripts/index.js"></script>
 </body>
 </html>

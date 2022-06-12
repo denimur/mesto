@@ -42,6 +42,7 @@
 @import url(../blocks/popup/__image-description/popup__image-description.css);
 
 @import url(../blocks/form/__item/form__item.css);
+@import url(../blocks/form/__item/_type/form__item_type_error.css);
 @import url(../blocks/form/__item-error/form__item-error.css);
 @import url(../blocks/form/__inputs/form__inputs.css);
 @import url(../blocks/form/__heading/form__heading.css);

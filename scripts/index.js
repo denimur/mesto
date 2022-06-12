@@ -1,4 +1,5 @@
 import { initialCards } from "./modules/cardsContent.js";
+import { toggleButtonState } from "./validate.js";
 
 const profileElement = document.querySelector('.profile')
 const editBtn = profileElement.querySelector('.profile__edit-btn');
@@ -6,19 +7,21 @@ const addBtn = profileElement.querySelector('.profile__add-btn');
 const nameEl = profileElement.querySelector('.profile__name');
 const activityEl = profileElement.querySelector('.profile__activity');
 
-const popup = document.querySelectorAll('.popup');
+const popupList = document.querySelectorAll('.popup');
 const userPopup = document.querySelector('.popup_type_user');
 const cardPopup = document.querySelector('.popup_type_card');
 const imagePopup = document.querySelector('.popup_type_image');
 const imageOpen = imagePopup.querySelector('.popup__image');
 const imageDescription = imagePopup.querySelector('.popup__image-description');
 
-const userFormElement = document.querySelector('.form_type_user'); 
-const cardFormElement = document.querySelector('.form_type_card'); 
-const userNameInput = userFormElement.querySelector('.form__item_el_user-name'); 
-const userActivityInput = userFormElement.querySelector('.form__item_el_user-activity');
-const cardNameInput = cardFormElement.querySelector('.form__item_el_card-name'); 
-const cardLinkInput = cardFormElement.querySelector('.form__item_el_card-link');
+const userForm = document.querySelector('.form_type_user'); 
+const cardForm = document.querySelector('.form_type_card'); 
+const userSubmitBtn = userForm.querySelector('.form__button');
+const userNameInput = userForm.querySelector('.form__item_el_user-name'); 
+const userActivityInput = userForm.querySelector('.form__item_el_user-activity');
+const cardSubmitBtn = cardForm.querySelector('.form__button');
+const cardNameInput = cardForm.querySelector('.form__item_el_card-name'); 
+const cardLinkInput = cardForm.querySelector('.form__item_el_card-link');
 const cardTemplate = document.querySelector('#card-template').content;
 
 const cardsElement = document.querySelector('.cards');
@@ -58,23 +61,24 @@ function deleteCard(evt) {
 
 function openPopup(popup) {
 	popup.classList.add('popup_opened');
+	document.addEventListener('keydown', closePopupHandler, {once: true})
 }
 
 function closePopup(popup) {
 	popup.classList.remove('popup_opened');
 }
 
-const closeBtnHandler = (evt) => {
-	const popup = evt.target.closest('.popup');
-	closePopup(popup)
-}
-
 const closePopupHandler = (evt) => {
+	const popupOpened = document.querySelector('.popup_opened');
+
 	if (evt.target.classList.contains('form__button')) {
 		closePopup(evt.target.closest('.popup'))
 	}
-	else if (evt.key === "Escape") {
-		closePopup(document.querySelector('.popup_opened'))
+	else if (evt.target.classList.contains('popup__close-btn')) {
+		closePopup(evt.target.closest('.popup'))
+	}
+	else if (popupOpened && evt.key === "Escape") {
+		closePopup(popupOpened)
 	}
 	else if (!(evt.target.classList.contains('popup__container'))) {
 		closePopup(evt.target)
@@ -90,15 +94,28 @@ const openImagePopup = (evt) => {
 	}
 }
 
+const resetErrorFields = (form) => {
+	const errorElList = form.querySelectorAll('.form__item-error');
+	const inputList = form.querySelectorAll('.form__item');
+	errorElList.forEach(errorEl => errorEl.textContent = '');
+	inputList.forEach(input => input.style.borderBottom = '1px solid rgba(0, 0, 0, .2)');
+}
+
 const openUserPopup = () => {
 	userNameInput.value = nameEl.textContent;
 	userActivityInput.value = activityEl.textContent;
-	
+
+	resetErrorFields(userForm)
+	toggleButtonState(userForm, userSubmitBtn);
 	openPopup(userPopup);
 }
 
 const openCardPopup = () => {
-	openPopup(cardPopup)
+	toggleButtonState(cardForm, cardSubmitBtn);
+	resetErrorFields(cardForm);
+
+	cardForm.reset();
+	openPopup(cardPopup);
 }
 
 function submitUserForm(evt) {
@@ -122,18 +139,16 @@ function createNewCard(evt) {
 		renderCard(createCard(newCard), cardsElement);
 	}
 
-	cardNameInput.value = '';
-	cardLinkInput.value = '';
+	evt.target.reset();
 	closePopupHandler(evt);
 }
 
 editBtn.addEventListener('click', openUserPopup);
 addBtn.addEventListener('click', openCardPopup);
-closeButtons.forEach(btn => btn.addEventListener('click', closeBtnHandler));
-popup.forEach(p => p.addEventListener('click', closePopupHandler))
-document.addEventListener('keydown', closePopupHandler)
-userFormElement.addEventListener('submit', submitUserForm);
-cardFormElement.addEventListener('submit', createNewCard);
+closeButtons.forEach(btn => btn.addEventListener('click', closePopupHandler));
+popupList.forEach(p => p.addEventListener('mousedown', closePopupHandler));
+userForm.addEventListener('submit', submitUserForm);
+cardForm.addEventListener('submit', createNewCard);
 cardsElement.addEventListener('click', likeCardHandler);
 cardsElement.addEventListener('click', deleteCard);
 cardsElement.addEventListener('click', openImagePopup);

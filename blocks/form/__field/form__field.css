@@ -1,14 +1,9 @@
 .form__field {
-	/* outline: 1px solid red; */
 	display: block;
 	font-size: 0;
-	position: relative;
-}
-
-.form__field:first-of-type {
-	margin-bottom: 2px;
+	min-height: 44px;
 }
 
 .form__field:last-of-type {
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 }
