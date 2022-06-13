@@ -26,27 +26,6 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 const cardsElement = document.querySelector('.cards');
 
-const closeButtons = document.querySelectorAll('.popup__close-btn');
-
-function createCard(card) {
-	const cardElement = cardTemplate.querySelector('.card').cloneNode(true);	
-	const imageElement = cardElement.querySelector('.card__image');
-	imageElement.src = card.link;
-	imageElement.alt = card.name;
-	cardElement.querySelector('.card__description').textContent = card.name;
-	return cardElement
-}
-
-function renderCard(card, container) {
-	container.prepend(card);
-}
-
-function renderCards(cards) {
-	cards.forEach(card => renderCard(createCard(card), cardsElement));
-}
-
-renderCards(initialCards);
-
 const likeCardHandler = evt => {
 	if (evt.target.classList.contains('card__icon')) {
 		evt.target.classList.toggle('card__icon_active');
@@ -61,38 +40,53 @@ function deleteCard(evt) {
 
 function openPopup(popup) {
 	popup.classList.add('popup_opened');
-	document.addEventListener('keydown', closePopupHandler, {once: true})
+	document.addEventListener('keydown', closePopupByEsc)
 }
 
 function closePopup(popup) {
 	popup.classList.remove('popup_opened');
+	document.removeEventListener('keydown', closePopupByEsc)
 }
 
-const closePopupHandler = (evt) => {
-	const popupOpened = document.querySelector('.popup_opened');
-
-	if (evt.target.classList.contains('form__button')) {
-		closePopup(evt.target.closest('.popup'))
-	}
-	else if (evt.target.classList.contains('popup__close-btn')) {
-		closePopup(evt.target.closest('.popup'))
-	}
-	else if (popupOpened && evt.key === "Escape") {
-		closePopup(popupOpened)
-	}
-	else if (!(evt.target.classList.contains('popup__container'))) {
-		closePopup(evt.target)
-	}
+const closePopupByEsc = (evt) => {
+	if (evt.key === 'Escape') {
+		const openedPopup = document.querySelector('.popup_opened') 
+		closePopup(openedPopup)
+  }
 }
 
 const openImagePopup = (evt) => {
-	if (evt.target.classList.contains('card__image')) {
-		const card = evt.target.closest('.card');
-		imageOpen.src = evt.target.src;
-		imageDescription.textContent = card.querySelector('.card__description').textContent;
-		openPopup(imagePopup);
-	}
+	const card = evt.target.closest('.card');
+	imageOpen.src = evt.target.src;
+	imageDescription.textContent = card.querySelector('.card__description').textContent;
+	imageOpen.alt = imageDescription.textContent;
+	openPopup(imagePopup);
 }
+
+function createCard(card) {
+	const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
+	const imageElement = cardElement.querySelector('.card__image');
+
+	imageElement.src = card.link;
+	imageElement.alt = card.name;
+	cardElement.querySelector('.card__description').textContent = card.name;
+
+	imageElement.addEventListener('click', openImagePopup)
+	cardElement.addEventListener('click', deleteCard)
+	cardElement.addEventListener('click', likeCardHandler)
+
+	return cardElement
+}
+
+function renderCard(card, container) {
+	container.prepend(card);
+}
+
+function renderCards(cards) {
+	cards.forEach(card => renderCard(createCard(card), cardsElement));
+}
+
+renderCards(initialCards);
 
 const resetErrorFields = (form) => {
 	const errorElList = form.querySelectorAll('.form__item-error');
@@ -124,7 +118,7 @@ function submitUserForm(evt) {
 	nameEl.textContent = userNameInput.value;
 	activityEl.textContent = userActivityInput.value;
 	
-	closePopupHandler(evt);
+	closePopup(userPopup)
 }
 
 function createNewCard(evt) {
@@ -140,15 +134,18 @@ function createNewCard(evt) {
 	}
 
 	evt.target.reset();
-	closePopupHandler(evt);
+	closePopup(cardPopup);
 }
 
 editBtn.addEventListener('click', openUserPopup);
 addBtn.addEventListener('click', openCardPopup);
-closeButtons.forEach(btn => btn.addEventListener('click', closePopupHandler));
-popupList.forEach(p => p.addEventListener('mousedown', closePopupHandler));
 userForm.addEventListener('submit', submitUserForm);
 cardForm.addEventListener('submit', createNewCard);
-cardsElement.addEventListener('click', likeCardHandler);
-cardsElement.addEventListener('click', deleteCard);
-cardsElement.addEventListener('click', openImagePopup);
+popupList.forEach(popup => popup.addEventListener('mousedown', (evt) => {
+	if (evt.target.classList.contains('popup_opened')) {
+		closePopup(popup)
+	}
+	if (evt.target.classList.contains('popup__close-btn')) {
+		closePopup(popup)
+	}
+}));
