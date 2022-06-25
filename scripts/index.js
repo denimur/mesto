@@ -1,5 +1,6 @@
 import { initialCards } from "./modules/cardsContent.js";
 import { toggleButtonState } from "./validate.js";
+import Card from "./card.js";
 
 const profileElement = document.querySelector('.profile')
 const editBtn = profileElement.querySelector('.profile__edit-btn');
@@ -10,9 +11,10 @@ const activityEl = profileElement.querySelector('.profile__activity');
 const popupList = document.querySelectorAll('.popup');
 const userPopup = document.querySelector('.popup_type_user');
 const cardPopup = document.querySelector('.popup_type_card');
-const imagePopup = document.querySelector('.popup_type_image');
-const imageOpen = imagePopup.querySelector('.popup__image');
-const imageDescription = imagePopup.querySelector('.popup__image-description');
+const popupTypeImage = document.querySelector('.popup_type_image');
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__image-description');
+const popupCloseButton = popupTypeImage.querySelector('.popup__close-btn');
 
 const userForm = document.querySelector('.form_type_user'); 
 const cardForm = document.querySelector('.form_type_card'); 
@@ -22,21 +24,9 @@ const userActivityInput = userForm.querySelector('.form__item_el_user-activity')
 const cardSubmitBtn = cardForm.querySelector('.form__button');
 const cardNameInput = cardForm.querySelector('.form__item_el_card-name'); 
 const cardLinkInput = cardForm.querySelector('.form__item_el_card-link');
-const cardTemplate = document.querySelector('#card-template').content;
+const templateSelector = document.querySelector('#card-template');
 
 const cardsElement = document.querySelector('.cards');
-
-const likeCardHandler = evt => {
-	if (evt.target.classList.contains('card__icon')) {
-		evt.target.classList.toggle('card__icon_active');
-	}
-}
-
-function deleteCard(evt) {
-	if (evt.target.classList.contains('card__delete-btn')) {
-		evt.target.closest('.card').remove();
-	}
-}
 
 function openPopup(popup) {
 	popup.classList.add('popup_opened');
@@ -48,58 +38,41 @@ function closePopup(popup) {
 	document.removeEventListener('keydown', closePopupByEsc)
 }
 
-const closePopupByEsc = (evt) => {
+export const closePopupByEsc = (evt) => {
 	if (evt.key === 'Escape') {
 		const openedPopup = document.querySelector('.popup_opened') 
 		closePopup(openedPopup)
   }
 }
 
-const openImagePopup = (evt) => {
-	const card = evt.target.closest('.card');
-	imageOpen.src = evt.target.src;
-	imageDescription.textContent = card.querySelector('.card__description').textContent;
-	imageOpen.alt = imageDescription.textContent;
-	openPopup(imagePopup);
+const handleOpenImagePopup = ({name, link}) => {
+	popupImage.src = link;
+	popupImage.alt = name;
+	popupCaption.textContent = name;
+	openPopup(popupTypeImage)
 }
 
-function createCard(card) {
-	const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-	const imageElement = cardElement.querySelector('.card__image');
-
-	imageElement.src = card.link;
-	imageElement.alt = card.name;
-	cardElement.querySelector('.card__description').textContent = card.name;
-
-	imageElement.addEventListener('click', openImagePopup)
-	cardElement.addEventListener('click', deleteCard)
-	cardElement.addEventListener('click', likeCardHandler)
-
-	return cardElement
+const renderCards = () => {
+	initialCards.forEach(item => {
+		const card = new Card(item, '#card-template', handleOpenImagePopup);
+		const cardElement = card.generateCard();
+		cardsElement.append(cardElement)
+	})
 }
-
-function renderCard(card, container) {
-	container.prepend(card);
-}
-
-function renderCards(cards) {
-	cards.forEach(card => renderCard(createCard(card), cardsElement));
-}
-
-renderCards(initialCards);
+renderCards()
 
 const resetErrorFields = (form) => {
 	const errorElList = form.querySelectorAll('.form__item-error');
 	const inputList = form.querySelectorAll('.form__item');
 	errorElList.forEach(errorEl => errorEl.textContent = '');
-	inputList.forEach(input => input.style.borderBottom = '1px solid rgba(0, 0, 0, .2)');
+	inputList.forEach(input => input.classList.remove('.form__item_type_error'));
 }
 
 const openUserPopup = () => {
 	userNameInput.value = nameEl.textContent;
 	userActivityInput.value = activityEl.textContent;
 
-	resetErrorFields(userForm)
+	resetErrorFields(userForm);
 	toggleButtonState(userForm, userSubmitBtn);
 	openPopup(userPopup);
 }
@@ -129,8 +102,11 @@ function createNewCard(evt) {
 		link: cardLinkInput.value
 	}
 
+	const card = new Card(newCard, '#card-template', handleOpenImagePopup);
+	const cardElement = card.generateCard()
+
 	if (newCard.link !== '' && newCard.name !== '') {
-		renderCard(createCard(newCard), cardsElement);
+		cardsElement.prepend(cardElement);
 	}
 
 	evt.target.reset();
