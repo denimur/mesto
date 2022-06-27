@@ -24,23 +24,21 @@ export default class Card {
 		return this._element;
 	}
 
-	_handleImageClick() {
+	_handleImageClick = () => {
 		this._handleOpenImagePopup({name: this._name, link: this._link})
 	}
 
-	_likeCardHandler() {
+	_handleLikeCard = () => {
 		this._element.querySelector('.card__icon').classList.toggle('card__icon_active')
 	}
 
-	_deleteCardHandler() {
+	_handleDeleteCard = () => {
 		this._element.remove()
 	}
 
 	_setEventListeners() {
-    this._element.querySelector('.card__image').addEventListener('click', () => {
-      this._handleImageClick();
-		});
-		this._element.querySelector('.card__icon').addEventListener('click', () => this._likeCardHandler())
-		this._element.querySelector('.card__delete-btn').addEventListener('click', () => this._deleteCardHandler())
+    this._element.querySelector('.card__image').addEventListener('click', this._handleImageClick);
+		this._element.querySelector('.card__icon').addEventListener('click', this._handleLikeCard);
+		this._element.querySelector('.card__delete-btn').addEventListener('click', this._handleDeleteCard);
   }
 }

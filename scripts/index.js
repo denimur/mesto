@@ -65,7 +65,7 @@ const resetErrorFields = (form) => {
 	const errorElList = form.querySelectorAll('.form__item-error');
 	const inputList = form.querySelectorAll('.form__item');
 	errorElList.forEach(errorEl => errorEl.textContent = '');
-	inputList.forEach(input => input.classList.remove('.form__item_type_error'));
+	inputList.forEach(input => input.classList.remove('form__item_type_error'));
 }
 
 const openUserPopup = () => {
