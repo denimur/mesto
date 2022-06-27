@@ -1,6 +1,20 @@
 import { initialCards } from "./modules/cardsContent.js";
-import { toggleButtonState } from "./validate.js";
 import Card from "./card.js";
+import FormValidator from "./validate.js";
+	
+const config = {
+  formSelector: '.form',
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__button',
+  inactiveButtonClass: 'form__button_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error_active'
+};
+
+const userFormValidator = new FormValidator(config, '.form_type_user')
+userFormValidator.enableValidation()
+const cardFormValidator = new FormValidator(config, '.form_type_card')
+cardFormValidator.enableValidation()
 
 const profileElement = document.querySelector('.profile')
 const editBtn = profileElement.querySelector('.profile__edit-btn');
@@ -73,12 +87,12 @@ const openUserPopup = () => {
 	userActivityInput.value = activityEl.textContent;
 
 	resetErrorFields(userForm);
-	toggleButtonState(userForm, userSubmitBtn);
+	userFormValidator._toggleButtonState(userForm, userSubmitBtn)
 	openPopup(userPopup);
 }
 
 const openCardPopup = () => {
-	toggleButtonState(cardForm, cardSubmitBtn);
+	cardFormValidator._toggleButtonState(cardForm, cardSubmitBtn)
 	resetErrorFields(cardForm);
 
 	cardForm.reset();
