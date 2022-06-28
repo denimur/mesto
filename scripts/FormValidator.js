@@ -10,7 +10,6 @@ export default class FormValidator {
     this._formElement = document.querySelector(this._formSelector);
     this._inputList = this._formElement.querySelectorAll(this._inputSelector);
     this._submitButtonElement = this._formElement.querySelector(this._submitButtonSelector);
-    this._errorElementList = this._formElement.querySelectorAll(this._errorElementSelector);
   }
 
   _showInputError = (formElement, inputElement, errorMessage) => {
@@ -45,9 +44,8 @@ export default class FormValidator {
   };
 
   resetValidation = () => {
-    this._toggleButtonState()
-    this._errorElementList.forEach(errorEl => errorEl.textContent = '');
-    this._inputList.forEach(input => input.classList.remove(this._inputErrorClass));
+    this._toggleButtonState();
+    this._inputList.forEach(input => this._hideInputError(this._formElement, input));
   }
 
   _checkInputValidity = (formElement, inputElement) => {

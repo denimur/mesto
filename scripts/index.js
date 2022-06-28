@@ -1,5 +1,5 @@
 import { initialCards } from "./modules/cardsContent.js";
-import Card from "./Card.js";
+import Card from "./Сard.js";
 import FormValidator from "./FormValidator.js";
 	
 const config = {
@@ -86,9 +86,8 @@ const openUserPopup = () => {
 }
 
 const openCardPopup = () => {
-	cardFormValidator.resetValidation();
-
 	cardForm.reset();
+	cardFormValidator.resetValidation();
 	openPopup(cardPopup);
 }
 
