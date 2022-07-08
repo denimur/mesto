@@ -1,44 +1,58 @@
-import { initialCards } from "./modules/cardsContent.js";
-import Card from "./Сard.js";
-import FormValidator from "./FormValidator.js";
-	
-const config = {
-  formSelector: '.form',
-  inputSelector: '.form__item',
-	submitButtonSelector: '.form__button',
-	errorElementSelector: '.form__item-error',
-  inactiveButtonClass: 'form__button_disabled',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__item-error_active'
-};
+import {
+	initialCards,
+	config,
+	popupImage,
+	popupCaption,
+	popupTypeImage,
+	cardsElement,
+	cardListSelector,
+	templateSelector,
+	nameEl,
+	activityEl,
+	userNameInput,
+	userActivityInput,
+	cardNameInput,
+	cardLinkInput,
+	editBtn,
+	addBtn,
+	userForm,
+	cardForm,
+	popupList,
+	cardPopup,
+	userPopup
+} from "./utils/constants.js";
+import Card from "./components/Сard.js";
+import FormValidator from "./components/FormValidator.js";
+import Section from "./components/Section.js";
+
 
 const userFormValidator = new FormValidator(config, '.form_type_user');
 userFormValidator.enableValidation();
 const cardFormValidator = new FormValidator(config, '.form_type_card');
 cardFormValidator.enableValidation();
 
-const profileElement = document.querySelector('.profile')
-const editBtn = profileElement.querySelector('.profile__edit-btn');
-const addBtn = profileElement.querySelector('.profile__add-btn');
-const nameEl = profileElement.querySelector('.profile__name');
-const activityEl = profileElement.querySelector('.profile__activity');
 
-const popupList = document.querySelectorAll('.popup');
-const userPopup = document.querySelector('.popup_type_user');
-const cardPopup = document.querySelector('.popup_type_card');
-const popupTypeImage = document.querySelector('.popup_type_image');
-const popupImage = popupTypeImage.querySelector('.popup__image');
-const popupCaption = popupTypeImage.querySelector('.popup__image-description');
+const handleOpenImagePopup = ({name, link}) => {
+	popupImage.src = link;
+	popupImage.alt = name;
+	popupCaption.textContent = name;
+	openPopup(popupTypeImage)
+}
 
-const userForm = document.querySelector('.form_type_user'); 
-const cardForm = document.querySelector('.form_type_card'); 
+const createCard = (cardItem) => {
+	const card = new Card(cardItem, '#card-template', handleOpenImagePopup);
+	return card.generateCard();
+}
 
-const userNameInput = userForm.querySelector('.form__item_el_user-name'); 
-const userActivityInput = userForm.querySelector('.form__item_el_user-activity');
-const cardNameInput = cardForm.querySelector('.form__item_el_card-name'); 
-const cardLinkInput = cardForm.querySelector('.form__item_el_card-link');
+const cardListElement = new Section({
+	items: initialCards, renderer: (item) => {
+		const cardElement = createCard(item);
 
-const cardsElement = document.querySelector('.cards');
+		cardListElement.addItem(cardElement)
+	}
+}, cardListSelector)
+
+cardListElement.renderItems()
 
 function openPopup(popup) {
 	popup.classList.add('popup_opened');
@@ -57,25 +71,15 @@ const closePopupByEsc = (evt) => {
   }
 }
 
-const handleOpenImagePopup = ({name, link}) => {
-	popupImage.src = link;
-	popupImage.alt = name;
-	popupCaption.textContent = name;
-	openPopup(popupTypeImage)
-}
 
-const createCard = (item) => {
-	const card = new Card(item, '#card-template', handleOpenImagePopup);
-	return card.generateCard();
-}
 
-const renderCards = (cards) => {
-	cards.forEach(item => {
-		const cardElement = createCard(item) 
-		cardsElement.append(cardElement)
-	})
-}
-renderCards(initialCards);
+// const renderCards = (cards) => {
+// 	cards.forEach(item => {
+// 		const cardElement = createCard(item) 
+// 		cardsElement.append(cardElement)
+// 	})
+// }
+// renderCards(initialCards);
 
 const openUserPopup = () => {
 	userNameInput.value = nameEl.textContent;
