@@ -24,6 +24,7 @@ import {
 import Card from "./components/Сard.js";
 import FormValidator from "./components/FormValidator.js";
 import Section from "./components/Section.js";
+import PopupWithImage from './components/PopupWithImage.js';
 
 
 const userFormValidator = new FormValidator(config, '.form_type_user');
@@ -33,14 +34,17 @@ cardFormValidator.enableValidation();
 
 
 const handleOpenImagePopup = ({name, link}) => {
-	popupImage.src = link;
-	popupImage.alt = name;
-	popupCaption.textContent = name;
-	openPopup(popupTypeImage)
+	// popupImage.src = link;
+	// popupImage.alt = name;
+	// popupCaption.textContent = name;
+	// openPopup(popupTypeImage)
+	const popupWithImage = new PopupWithImage({ name, link }, '.popup_type_image');
+	popupWithImage.setEventListeners();
+	popupWithImage.open();
 }
 
 const createCard = (cardItem) => {
-	const card = new Card(cardItem, '#card-template', handleOpenImagePopup);
+	const card = new Card(cardItem, templateSelector, handleOpenImagePopup);
 	return card.generateCard();
 }
 
@@ -54,22 +58,22 @@ const cardListElement = new Section({
 
 cardListElement.renderItems()
 
-function openPopup(popup) {
-	popup.classList.add('popup_opened');
-	document.addEventListener('keydown', closePopupByEsc)
-}
+// function openPopup(popup) {
+// 	popup.classList.add('popup_opened');
+// 	document.addEventListener('keydown', closePopupByEsc)
+// }
 
-function closePopup(popup) {
-	popup.classList.remove('popup_opened');
-	document.removeEventListener('keydown', closePopupByEsc)
-}
+// function closePopup(popup) {
+// 	popup.classList.remove('popup_opened');
+// 	document.removeEventListener('keydown', closePopupByEsc)
+// }
 
-const closePopupByEsc = (evt) => {
-	if (evt.key === 'Escape') {
-		const openedPopup = document.querySelector('.popup_opened') 
-		closePopup(openedPopup)
-  }
-}
+// const closePopupByEsc = (evt) => {
+// 	if (evt.key === 'Escape') {
+// 		const openedPopup = document.querySelector('.popup_opened') 
+// 		closePopup(openedPopup)
+//   }
+// }
 
 
 
@@ -126,11 +130,11 @@ editBtn.addEventListener('click', openUserPopup);
 addBtn.addEventListener('click', openCardPopup);
 userForm.addEventListener('submit', submitUserForm);
 cardForm.addEventListener('submit', createNewCard);
-popupList.forEach(popup => popup.addEventListener('mousedown', (evt) => {
-	if (evt.target.classList.contains('popup_opened')) {
-		closePopup(popup)
-	}
-	if (evt.target.classList.contains('popup__close-btn')) {
-		closePopup(popup)
-	}
-}));
+// popupList.forEach(popup => popup.addEventListener('mousedown', (evt) => {
+// 	if (evt.target.classList.contains('popup_opened')) {
+// 		closePopup(popup)
+// 	}
+// 	if (evt.target.classList.contains('popup__close-btn')) {
+// 		closePopup(popup)
+// 	}
+// }));
