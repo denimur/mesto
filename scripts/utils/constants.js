@@ -28,23 +28,14 @@ export const initialCards = [
 export const profileElement = document.querySelector('.profile')
 export const editBtn = profileElement.querySelector('.profile__edit-btn');
 export const addBtn = profileElement.querySelector('.profile__add-btn');
-export const nameEl = profileElement.querySelector('.profile__name');
-export const activityEl = profileElement.querySelector('.profile__activity');
+export const profileNameSelector = '.profile__name';
+export const profileActivitySelectior = '.profile__activity';
 
-export const popupList = document.querySelectorAll('.popup');
-export const userPopup = document.querySelector('.popup_type_user');
-export const cardPopup = document.querySelector('.popup_type_card');
-export const popupTypeImage = document.querySelector('.popup_type_image');
-export const popupImage = popupTypeImage.querySelector('.popup__image');
-export const popupCaption = popupTypeImage.querySelector('.popup__image-description');
-
-export const userForm = document.querySelector('.form_type_user'); 
-export const cardForm = document.querySelector('.form_type_card'); 
-
-export const userNameInput = userForm.querySelector('.form__item_el_user-name'); 
-export const userActivityInput = userForm.querySelector('.form__item_el_user-activity');
-export const cardNameInput = cardForm.querySelector('.form__item_el_card-name'); 
-export const cardLinkInput = cardForm.querySelector('.form__item_el_card-link');
+export const userPopupSelector = '.popup_type_user';
+export const cardPopupSelector = '.popup_type_card';
+export const imagePopupSelector = '.popup_type_image';
+export const userFormSelector = '.form_type_user'; 
+export const cardFormSelector = '.form_type_card'; 
 
 export const cardsElement = document.querySelector('.cards');
 export const cardListSelector = '.cards';

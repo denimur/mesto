@@ -1,50 +1,41 @@
 import {
 	initialCards,
 	config,
-	popupImage,
-	popupCaption,
-	popupTypeImage,
 	cardsElement,
 	cardListSelector,
 	templateSelector,
-	nameEl,
-	activityEl,
-	userNameInput,
-	userActivityInput,
-	cardNameInput,
-	cardLinkInput,
+	cardFormSelector,
+	userFormSelector,
+	imagePopupSelector,
+	userPopupSelector,
+	cardPopupSelector,
+	profileNameSelector,
+	profileActivitySelectior,
 	editBtn,
-	addBtn,
-	userForm,
-	cardForm,
-	popupList,
-	cardPopup,
-	userPopup
+	addBtn
 } from "./utils/constants.js";
+import { toCamelCase } from "./utils/toCamelCase.js";
 import Card from "./components/Сard.js";
 import FormValidator from "./components/FormValidator.js";
 import Section from "./components/Section.js";
 import PopupWithImage from './components/PopupWithImage.js';
+import PopupWithForm from './components/PopupWithForm.js';
+import UserInfo from './components/UserInfo.js';
 
 
-const userFormValidator = new FormValidator(config, '.form_type_user');
+const userFormValidator = new FormValidator(config, userFormSelector);
 userFormValidator.enableValidation();
-const cardFormValidator = new FormValidator(config, '.form_type_card');
+const cardFormValidator = new FormValidator(config, cardFormSelector);
 cardFormValidator.enableValidation();
 
-
-const handleOpenImagePopup = ({name, link}) => {
-	// popupImage.src = link;
-	// popupImage.alt = name;
-	// popupCaption.textContent = name;
-	// openPopup(popupTypeImage)
-	const popupWithImage = new PopupWithImage({ name, link }, '.popup_type_image');
+const handleCardClick = ({name, link}) => {
+	const popupWithImage = new PopupWithImage({ name, link }, imagePopupSelector);
 	popupWithImage.setEventListeners();
 	popupWithImage.open();
 }
 
 const createCard = (cardItem) => {
-	const card = new Card(cardItem, templateSelector, handleOpenImagePopup);
+	const card = new Card(cardItem, templateSelector, handleCardClick);
 	return card.generateCard();
 }
 
@@ -58,83 +49,47 @@ const cardListElement = new Section({
 
 cardListElement.renderItems()
 
-// function openPopup(popup) {
-// 	popup.classList.add('popup_opened');
-// 	document.addEventListener('keydown', closePopupByEsc)
-// }
-
-// function closePopup(popup) {
-// 	popup.classList.remove('popup_opened');
-// 	document.removeEventListener('keydown', closePopupByEsc)
-// }
-
-// const closePopupByEsc = (evt) => {
-// 	if (evt.key === 'Escape') {
-// 		const openedPopup = document.querySelector('.popup_opened') 
-// 		closePopup(openedPopup)
-//   }
-// }
-
-
-
-// const renderCards = (cards) => {
-// 	cards.forEach(item => {
-// 		const cardElement = createCard(item) 
-// 		cardsElement.append(cardElement)
-// 	})
-// }
-// renderCards(initialCards);
+const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm)
+userPopupWithForm.setEventListeners()
+const userInfo = new UserInfo(profileNameSelector, profileActivitySelectior);
 
 const openUserPopup = () => {
-	userNameInput.value = nameEl.textContent;
-	userActivityInput.value = activityEl.textContent;
+	const user = userInfo.getUserInfo()
+	userPopupWithForm._inputList.forEach(input => {
+		input.value = user[toCamelCase(input.name)]
+	})
 
 	userFormValidator.resetValidation();
-	openPopup(userPopup);
+	userPopupWithForm.open();
 }
+
+const cardPopupWithForm = new PopupWithForm(cardPopupSelector, submitCardForm);
+cardPopupWithForm.setEventListeners();
 
 const openCardPopup = () => {
-	cardForm.reset();
 	cardFormValidator.resetValidation();
-	openPopup(cardPopup);
+	cardPopupWithForm.open();
 }
 
-function submitUserForm(evt) {
+
+function submitUserForm(evt, {userName: name, userActivity: activity}) {
 	evt.preventDefault();
-	
-	nameEl.textContent = userNameInput.value;
-	activityEl.textContent = userActivityInput.value;
-	
-	closePopup(userPopup)
+
+	userInfo.setUserInfo({ name, activity });
+	userPopupWithForm.close();
 }
 
-function createNewCard(evt) {
+function submitCardForm(evt, {cardName: name, cardLink: link}) {
 	evt.preventDefault();
 
-	const newCard = {
-		name: cardNameInput.value,
-		link: cardLinkInput.value
-	}
-
-	const cardElement = createCard(newCard);
-
-	if (newCard.link !== '' && newCard.name !== '') {
+	const cardElement = createCard({ name, link });
+	
+	if (name !== '' && link !== '') {
 		cardsElement.prepend(cardElement);
 	}
 
-	evt.target.reset();
-	closePopup(cardPopup);
+	cardPopupWithForm.close();
 }
 
 editBtn.addEventListener('click', openUserPopup);
 addBtn.addEventListener('click', openCardPopup);
-userForm.addEventListener('submit', submitUserForm);
-cardForm.addEventListener('submit', createNewCard);
-// popupList.forEach(popup => popup.addEventListener('mousedown', (evt) => {
-// 	if (evt.target.classList.contains('popup_opened')) {
-// 		closePopup(popup)
-// 	}
-// 	if (evt.target.classList.contains('popup__close-btn')) {
-// 		closePopup(popup)
-// 	}
-// }));
