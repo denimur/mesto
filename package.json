@@ -1,0 +1,24 @@
+{
+  "name": "mesto",
+  "version": "1.0.0",
+  "description": "Четвёртый учебный проект, в котором автор впервые применяет технологию JavaScript и взаимодействие с DOM",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denimur/mesto.git"
+  },
+  "keywords": [],
+  "author": "Denis Muradov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denimur/mesto/issues"
+  },
+  "homepage": "https://github.com/denimur/mesto#readme",
+  "devDependencies": {
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
