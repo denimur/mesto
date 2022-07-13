@@ -21,6 +21,7 @@ import Section from "./components/Section.js";
 import PopupWithImage from './components/PopupWithImage.js';
 import PopupWithForm from './components/PopupWithForm.js';
 import UserInfo from './components/UserInfo.js';
+import '../pages/index.css';
 
 
 const userFormValidator = new FormValidator(config, userFormSelector);
@@ -43,21 +44,21 @@ const cardListElement = new Section({
 	items: initialCards, renderer: (item) => {
 		const cardElement = createCard(item);
 
-		cardListElement.addItem(cardElement)
+		cardListElement.addItem(cardElement);
 	}
-}, cardListSelector)
+}, cardListSelector);
 
-cardListElement.renderItems()
+cardListElement.renderItems();
 
-const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm)
-userPopupWithForm.setEventListeners()
+const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm);
+userPopupWithForm.setEventListeners();
 const userInfo = new UserInfo(profileNameSelector, profileActivitySelectior);
 
 const openUserPopup = () => {
-	const user = userInfo.getUserInfo()
-	userPopupWithForm._inputList.forEach(input => {
-		input.value = user[toCamelCase(input.name)]
-	})
+	const user = userInfo.getUserInfo();
+	userPopupWithForm.inputList.forEach(input => {
+		input.value = user[toCamelCase(input.name)];
+	});
 
 	userFormValidator.resetValidation();
 	userPopupWithForm.open();
@@ -70,7 +71,6 @@ const openCardPopup = () => {
 	cardFormValidator.resetValidation();
 	cardPopupWithForm.open();
 }
-
 
 function submitUserForm(evt, {userName: name, userActivity: activity}) {
 	evt.preventDefault();
