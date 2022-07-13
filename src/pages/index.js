@@ -13,15 +13,15 @@ import {
 	profileActivitySelectior,
 	editBtn,
 	addBtn
-} from "./utils/constants.js";
-import { toCamelCase } from "./utils/toCamelCase.js";
-import Card from "./components/Сard.js";
-import FormValidator from "./components/FormValidator.js";
-import Section from "./components/Section.js";
-import PopupWithImage from './components/PopupWithImage.js';
-import PopupWithForm from './components/PopupWithForm.js';
-import UserInfo from './components/UserInfo.js';
-import '../pages/index.css';
+} from "../utils/constants.js";
+import { toCamelCase } from "../utils/toCamelCase.js";
+import Card from "../components/Сard.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import UserInfo from '../components/UserInfo.js';
+import './index.css';
 
 
 const userFormValidator = new FormValidator(config, userFormSelector);
