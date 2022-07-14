@@ -1,7 +1,6 @@
 import {
 	initialCards,
 	config,
-	cardsElement,
 	cardListSelector,
 	templateSelector,
 	cardFormSelector,
@@ -28,11 +27,11 @@ const userFormValidator = new FormValidator(config, userFormSelector);
 userFormValidator.enableValidation();
 const cardFormValidator = new FormValidator(config, cardFormSelector);
 cardFormValidator.enableValidation();
+const popupWithImage = new PopupWithImage(imagePopupSelector);
+popupWithImage.setEventListeners();
 
-const handleCardClick = ({name, link}) => {
-	const popupWithImage = new PopupWithImage({ name, link }, imagePopupSelector);
-	popupWithImage.setEventListeners();
-	popupWithImage.open();
+const handleCardClick = ({ name, link }) => {
+	popupWithImage.open({ name, link });
 }
 
 const createCard = (cardItem) => {
@@ -40,15 +39,12 @@ const createCard = (cardItem) => {
 	return card.generateCard();
 }
 
-const cardListElement = new Section({
-	items: initialCards, renderer: (item) => {
+const cardListElement = new Section(item => {
 		const cardElement = createCard(item);
-
 		cardListElement.addItem(cardElement);
-	}
-}, cardListSelector);
+	}, cardListSelector);
 
-cardListElement.renderItems();
+cardListElement.renderItems(initialCards);
 
 const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm);
 userPopupWithForm.setEventListeners();
@@ -83,11 +79,7 @@ function submitCardForm(evt, {cardName: name, cardLink: link}) {
 	evt.preventDefault();
 
 	const cardElement = createCard({ name, link });
-	
-	if (name !== '' && link !== '') {
-		cardsElement.prepend(cardElement);
-	}
-
+	cardListElement.prependItem(cardElement);
 	cardPopupWithForm.close();
 }
 
