@@ -1,9 +1,0 @@
-.form__field {
-	display: block;
-	font-size: 0;
-	min-height: 44px;
-}
-
-.form__field:last-of-type {
-	margin-bottom: 10px;
-}
