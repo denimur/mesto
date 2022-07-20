@@ -20,13 +20,21 @@ import Section from "../components/Section.js";
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
+import Api from "../components/Api.js";
 import './index.css';
 
+const options = {
+	cohortId: 'cohort-46', token: 'a7c510e0-05ad-459e-a0d1-31a92d4ef951'
+};
+
+const api = new Api(options);
 
 const userFormValidator = new FormValidator(config, userFormSelector);
 userFormValidator.enableValidation();
+
 const cardFormValidator = new FormValidator(config, cardFormSelector);
 cardFormValidator.enableValidation();
+
 const popupWithImage = new PopupWithImage(imagePopupSelector);
 popupWithImage.setEventListeners();
 
@@ -39,16 +47,39 @@ const createCard = (cardItem) => {
 	return card.generateCard();
 }
 
-const cardListElement = new Section(item => {
-		const cardElement = createCard(item);
-		cardListElement.addItem(cardElement);
+function renderCards() {
+	const cardListElement = new Section(item => {
+			const cardElement = createCard(item);
+			cardListElement.addItem(cardElement);
 	}, cardListSelector);
+	
+	api.getInitialCards()
+		.then(res => res.ok ? res.json() : Promise.reject(res.status))
+		.then(result => cardListElement.renderItems(result))
+		.catch(err => console.log(`Error ${err}`))
+}
+renderCards()
 
-cardListElement.renderItems(initialCards);
+
+// cardListElement.renderItems(initialCards);
 
 const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm);
 userPopupWithForm.setEventListeners();
-const userInfo = new UserInfo(profileNameSelector, profileActivitySelectior);
+const userInfo = new UserInfo('.profile');
+
+function renderUserInfo() {
+	api.getUserInfo()
+		.then(res => res.ok ? res.json() : Promise.reject(res.status))
+		.then(data => userInfo.setUserInfo(data))
+}
+renderUserInfo();
+
+function editUserInfo({name, about}) {
+	api.editUserInfo({name, about})
+		// .then(res => res.ok ? res.json() : Promise.reject(res.status))
+		// .then(user => console.log(user))
+}
+
 
 const openUserPopup = () => {
 	const user = userInfo.getUserInfo();
@@ -68,10 +99,11 @@ const openCardPopup = () => {
 	cardPopupWithForm.open();
 }
 
-function submitUserForm(evt, {userName: name, userActivity: activity}) {
+function submitUserForm(evt, {userName: name, userActivity: about }) {
 	evt.preventDefault();
 
-	userInfo.setUserInfo({ name, activity });
+	editUserInfo({name, about})
+	userInfo.setUserInfo({ name, about });
 	userPopupWithForm.close();
 }
 
