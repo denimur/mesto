@@ -1,7 +1,9 @@
 export default class Card {
-	constructor(data, templateSelector, handleCardClick) {
+	constructor(data, options, templateSelector, handleCardClick) {
 		this._name = data.name;
 		this._link = data.link;
+		this._ownerId = data.owner._id;
+		this._userId = options.userId;
 		this._templateSelector = templateSelector;
 		this._handleCardClick = handleCardClick;
 		this._cardElement = document.querySelector(this._templateSelector).content.querySelector('.card').cloneNode(true);
@@ -15,6 +17,9 @@ export default class Card {
 		this._cardImage.src = this._link;
 		this._cardImage.alt = this._name;
 		this._cardDescription.textContent = this._name;
+		if (this._ownerId === this._userId) {
+			this._cardDeleteButton.classList.remove('card__delete-btn_disabled')
+		}
 
 		this._setEventListeners();
 

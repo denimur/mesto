@@ -12,6 +12,27 @@ export default class Api {
 		})
 	}
 
+	addCard(card) {
+		return fetch(`https://mesto.nomoreparties.co/v1/${this.cohortId}/cards`, {
+			method: 'POST',
+			headers: {
+				authorization: this.token,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({name: card.name, link: card.link})
+		})
+	}
+
+	deleteCard(card) {
+		return fetch(`https://mesto.nomoreparties.co/v1/${this.cohortId}/cards/${card._id}`, {
+			method: 'DELETE',
+			headers: {
+				authorization: this.token,
+				'Content-Type': 'application/json'
+			}
+		})
+	}
+
 	getUserInfo() {
 		return fetch(`https://nomoreparties.co/v1/${this.cohortId}/users/me`, {
 		  headers: {
@@ -28,9 +49,20 @@ export default class Api {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: name,
-				about: about
+				name,
+				about
 			})
+		})
+	}
+
+	editUserAvatar(avatar) {
+		return fetch(`https://mesto.nomoreparties.co/v1/${this.cohortId}/users/me/avatar`, {
+			method: 'PATCH',
+			headers: {
+				authorization: this.token,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({avatar})
 		})
 	}
 

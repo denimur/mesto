@@ -1,12 +1,6 @@
 .profile__avatar {
 	width: 120px;
 	border-radius: 50%;
-	grid-column: 1;
-}
-
-@media (max-width: 768px) {
-	.profile__avatar {
-		grid-row: 1;
-		grid-column: 1;
-	}
+	display: block;
+	margin: 0 auto;
 }
