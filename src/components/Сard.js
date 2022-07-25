@@ -1,11 +1,21 @@
 export default class Card {
-	constructor(data, options, templateSelector, handleCardClick) {
+	constructor(
+		data,
+		{ userId },
+		templateSelector,
+		handleCardClick,
+		handleConfirmPopupOpen
+	)
+	{
 		this._name = data.name;
 		this._link = data.link;
+		this._id = data._id;
 		this._ownerId = data.owner._id;
-		this._userId = options.userId;
+		this._userId = userId;
 		this._templateSelector = templateSelector;
 		this._handleCardClick = handleCardClick;
+		this._handleConfirmPopupOpen = handleConfirmPopupOpen;
+		// this._submitConfirmForm = submitConfirmForm;
 		this._cardElement = document.querySelector(this._templateSelector).content.querySelector('.card').cloneNode(true);
 		this._cardImage = this._cardElement.querySelector('.card__image');
 		this._cardDescription = this._cardElement.querySelector('.card__description');
@@ -34,13 +44,19 @@ export default class Card {
 		this._cardLikeButton.classList.toggle('card__icon_active');
 	}
 
-	_handleDeleteCard = () => {
+	_handleDeleteBtnClick = () => {
+		this._handleConfirmPopupOpen(this._id, this.remove)
+		// this._submitConfirmForm(this._id)
+		// console.dir(this._id)
+	}
+	
+	remove = () => {
 		this._cardElement.remove();
 	}
 
 	_setEventListeners = () => {
     this._cardImage.addEventListener('click', this._handleImageClick);
 		this._cardLikeButton.addEventListener('click', this._handleLikeCard);
-		this._cardDeleteButton.addEventListener('click', this._handleDeleteCard);
+		this._cardDeleteButton.addEventListener('click', this._handleDeleteBtnClick);
   }
 }

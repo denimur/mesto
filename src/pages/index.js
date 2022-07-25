@@ -21,16 +21,16 @@ import Section from "../components/Section.js";
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
+import PopupConfirm from './../components/PopupConfirm.js';
 import Api from "../components/Api.js";
 import './index.css';
 
 const options = {
 	cohortId: 'cohort-46',
 	token: 'a7c510e0-05ad-459e-a0d1-31a92d4ef951',
-	userId: ''
 };
 
-console.log(options)
+// console.log(options)
 
 const api = new Api(options);
 
@@ -43,12 +43,26 @@ cardFormValidator.enableValidation();
 const popupWithImage = new PopupWithImage(imagePopupSelector);
 popupWithImage.setEventListeners();
 
+const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm);
+userPopupWithForm.setEventListeners();
+const userInfo = new UserInfo('.profile');
+
+
+function renderUserInfo() {
+	api.getUserInfo()
+		.then(data => {
+			userInfo.setUserInfo(data);
+			console.log(data)
+		})
+}
+renderUserInfo();
+
 const handleCardClick = ({ name, link }) => {
 	popupWithImage.open({ name, link });
 }
 
 function createCard(cardItem) {
-	const card = new Card(cardItem, options, cardTemplateSelector, handleCardClick);
+	const card = new Card(cardItem, {userId: options.userId}, cardTemplateSelector, handleCardClick, handleConfirmPopupOpen);
 	return card.generateCard();
 }
 
@@ -58,52 +72,43 @@ const cardListElement = new Section(item => {
 }, cardListSelector);
 
 function renderCards() {
-	api.getInitialCards()
-		.then(res => res.ok ? res.json() : Promise.reject(res.status))
-		.then(cards => { cardListElement.renderItems(cards); console.log(cards)})
+	Promise.all([api.getUserInfo(), api.getInitialCards()])
+		.then(responses => {
+			options.userId = responses[0]._id;
+			cardListElement.renderItems(responses[1]);
+		})
 		.catch(err => console.log(`Error ${err}`))
 }
 renderCards()
 
 // cardListElement.renderItems(initialCards);
 
-const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm);
-userPopupWithForm.setEventListeners();
-const userInfo = new UserInfo('.profile');
-
-function renderUserInfo() {
-	api.getUserInfo()
-		.then(res => res.ok ? res.json() : Promise.reject(res.status))
-		.then(data => {
-			userInfo.setUserInfo(data);
-			options.userId = data._id;
-		})
-}
-renderUserInfo();
-
-function editUserInfo({name, about}) {
-	api.editUserInfo({name, about})
-		// .then(res => res.ok ? res.json() : Promise.reject(res.status))
-		// .then(user => console.log(user))
-}
-
-const popupTypeConfirm = new PopupWithForm('.popup_type_confirm', submitConfirmForm);
+const popupTypeConfirm = new PopupConfirm('.popup_type_confirm', submitConfirmForm);
 popupTypeConfirm.setEventListeners()
 
-function openConfirmPopup() {
+function handleConfirmPopupOpen(id, remove) {
+// записываем данные в поля класса popupTypeConfirm
+	popupTypeConfirm._id = id;
+// ссылка на метод удаления карточки из DOM
+	popupTypeConfirm.remove = remove;
 	popupTypeConfirm.open();
 }
 
-function submitConfirmForm(evt) {
+
+function submitConfirmForm(evt, cardId) {
 	evt.preventDefault();
-	console.log('Confirm')
+
+	api.deleteCard(cardId)
+		.then(popupTypeConfirm.remove())
+		.catch(err => console.log(err))
+	popupTypeConfirm.close()
 }
 
 const popupTypeAvatar = new PopupWithForm('.popup_type_avatar', submitAvatarForm)
 popupTypeAvatar.setEventListeners();
 
-function openAvatarPopup(evt) {
-	console.log(evt.target.children[0])
+function openAvatarPopup() {
+	// console.log(popupTypeAvatar._getInputValues())
 	popupTypeAvatar.open()
 }
 
@@ -125,15 +130,22 @@ const openCardPopup = () => {
 	cardPopupWithForm.open();
 }
 
-function submitAvatarForm(evt) {
+function submitAvatarForm(evt, {avatarLink: avatar}) {
 	evt.preventDefault()
-	console.log("submit avatar");
+
+	api.editUserAvatar({ avatar })
+		.then(user => userInfo.setUserAvatar(user.avatar))
+		.catch(err => console.log(err))
+	console.log(avatar);
+	console.log(userInfo.getUserInfo())
+
+	popupTypeAvatar.close();
 }
 
 function submitUserForm(evt, {userName: name, userActivity: about }) {
 	evt.preventDefault();
 
-	editUserInfo({name, about})
+	api.editUserInfo({name, about})
 	userInfo.setUserInfo({ name, about });
 	userPopupWithForm.close();
 }
@@ -143,7 +155,6 @@ function submitCardForm(evt, {cardName: name, cardLink: link}) {
 	const card = {name, link} 
 
 	api.addCard(card)
-		.then(res => res.ok ? res.json() : Promise.reject(res.status))
 		.then(card => cardListElement.prependItem(createCard(card)))
 	
 	cardPopupWithForm.close();

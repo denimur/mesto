@@ -4,7 +4,7 @@ import { toCamelCase } from '../utils/toCamelCase.js';
 export default class PopupWithForm extends Popup {
 	constructor(popupSelector, handleFormSubmit) {
 		super(popupSelector);
-		this._formElement = this._popupElement.querySelector('.form')
+		this._formElement = this._popupElement.querySelector('.form');
 		this.inputList = this._formElement.querySelectorAll('.form__item');
 		this._handleFormSubmit = handleFormSubmit;
 	}

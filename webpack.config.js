@@ -10,7 +10,8 @@ module.exports = {
     filename: 'main.js',
         publicPath: ''
   },
-    mode: 'development',
+  mode: 'development',
+  devtool  : "inline-source-map",
   devServer: {
     static: path.resolve(__dirname, './dist'),
     compress: true,
