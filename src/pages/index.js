@@ -7,11 +7,8 @@ import {
 	imagePopupSelector,
 	userPopupSelector,
 	cardPopupSelector,
-	profileNameSelector,
-	profileActivitySelectior,
 	editUserInfoBtn,
 	addBtn,
-	cardDeleteBtn,
 	editUserAvatarBtn
 } from "../utils/constants.js";
 import { toCamelCase } from "../utils/toCamelCase.js";
@@ -52,7 +49,7 @@ function renderUserInfo() {
 	api.getUserInfo()
 		.then(data => {
 			userInfo.setUserInfo(data);
-			console.log(data)
+			// console.log(data)
 		})
 }
 renderUserInfo();
@@ -62,7 +59,7 @@ const handleCardClick = ({ name, link }) => {
 }
 
 function createCard(cardItem) {
-	const card = new Card(cardItem, {userId: options.userId}, cardTemplateSelector, handleCardClick, handleConfirmPopupOpen);
+	const card = new Card(cardItem, {userId: options.userId}, cardTemplateSelector, handleCardClick, handleConfirmPopupOpen, handlePutLike, handleDeleteLike, likesCount);
 	return card.generateCard();
 }
 
@@ -76,6 +73,7 @@ function renderCards() {
 		.then(responses => {
 			options.userId = responses[0]._id;
 			cardListElement.renderItems(responses[1]);
+			console.log(responses[1])
 		})
 		.catch(err => console.log(`Error ${err}`))
 }
@@ -108,7 +106,6 @@ const popupTypeAvatar = new PopupWithForm('.popup_type_avatar', submitAvatarForm
 popupTypeAvatar.setEventListeners();
 
 function openAvatarPopup() {
-	// console.log(popupTypeAvatar._getInputValues())
 	popupTypeAvatar.open()
 }
 
@@ -132,10 +129,11 @@ const openCardPopup = () => {
 
 function submitAvatarForm(evt, {avatarLink: avatar}) {
 	evt.preventDefault()
-
+	popupTypeAvatar.renderLoading(true)
 	api.editUserAvatar({ avatar })
 		.then(user => userInfo.setUserAvatar(user.avatar))
 		.catch(err => console.log(err))
+		.finally(() => popupTypeAvatar.renderLoading(false))
 	console.log(avatar);
 	console.log(userInfo.getUserInfo())
 
@@ -163,3 +161,22 @@ function submitCardForm(evt, {cardName: name, cardLink: link}) {
 editUserInfoBtn.addEventListener('click', openUserPopup);
 editUserAvatarBtn.addEventListener('click', openAvatarPopup);
 addBtn.addEventListener('click', openCardPopup);
+
+const likesCount = (card) => {
+	return new Promise((res, rej) => {
+		res(card)
+	});
+}
+
+const p = new Promise((res, rej) => {
+	likesCount()
+})
+
+function handlePutLike(cardId) {
+	return api.likeCard(cardId)
+}
+
+function handleDeleteLike(cardId) {
+	return api.dislikeCard(cardId)
+}
+

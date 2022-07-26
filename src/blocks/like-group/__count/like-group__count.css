@@ -1,0 +1,10 @@
+.like-group__count {
+	display: block;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	font-weight: 400;
+	font-size: 13px;
+	line-height: 16px;
+	text-align: center;
+	color: #000;
+}

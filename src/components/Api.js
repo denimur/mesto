@@ -34,6 +34,26 @@ export default class Api {
 		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
 	}
 
+	likeCard(cardId) {
+		return fetch(`${this._url}/${this.cohortId}/cards/${cardId}/likes`, {
+			method: 'PUT',
+			headers: {
+				authorization: this.token,
+				'Content-Type': 'application/json'
+			}
+		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+	}
+
+	dislikeCard(cardId) {
+		return fetch(`${this._url}/${this.cohortId}/cards/${cardId}/likes`, {
+			method: 'DELETE',
+			headers: {
+				authorization: this.token,
+				'Content-Type': 'application/json'
+			}
+		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+	}
+
 	getUserInfo() {
 		return fetch(`https://nomoreparties.co/v1/${this.cohortId}/users/me`, {
 		  headers: {

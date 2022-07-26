@@ -1,0 +1,13 @@
+.like-group__icon {
+	width: 22px;
+	height: 19px;
+	border: 0;
+	padding: 0;
+	background: url(../../../images/card-icon.svg) center / contain no-repeat;
+	transition: opacity .3s;
+}
+
+.like-group__icon:hover {
+	cursor: pointer;
+	opacity: .6;
+}

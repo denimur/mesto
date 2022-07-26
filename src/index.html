@@ -20,14 +20,8 @@
 
 			<section class="profile">
 				<div class="profile__overlay">
-					<img 
-				<img 
-					<img 
-						src="<%=require('./images/image-profile.png')%>"
-					src="<%=require('./images/image-profile.png')%>" 
-						src="<%=require('./images/image-profile.png')%>"
-						alt="Жак-Ив Кусто в красной вязанной шапке на фоне океана."
-					alt="Жак-Ив Кусто в красной вязанной шапке на фоне океана." 
+					<img
+				 		src="<%=require('./images/image-profile.png')%>"
 						alt="Жак-Ив Кусто в красной вязанной шапке на фоне океана."
 						class="profile__avatar"/>
 				</div>
@@ -177,7 +171,10 @@
 				<img class="card__image">
 				<div class="card__group">
 					<p class="card__description overflow-hidden"></p>
-					<button class="card__icon" type="button"></button>
+					<div class="like-group">
+						<button class="like-group__icon" type="button"></button>
+						<span class="like-group__count"></span>
+					</div>
 				</div>	
 				<button class="card__delete-btn card__delete-btn_disabled" type="button"></button>
 			</article>

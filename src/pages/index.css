@@ -24,12 +24,15 @@
 
 @import url(../blocks/card/card.css);
 @import url(../blocks/card/__image/card__image.css);
-@import url(../blocks/card/__icon/card__icon.css);
-@import url(../blocks/card/__icon/_active/card__icon_active.css);
 @import url(../blocks/card/__group/card__group.css);
 @import url(../blocks/card/__description/card__description.css);
 @import url(../blocks/card/__delete-btn/card__delete-btn.css);
 @import url(../blocks/card/__delete-btn/_disabled/card__delete-btn_disabled.css);
+
+@import url(../blocks/like-group/__count/like-group__count.css);
+@import url(../blocks/like-group/__icon/like-group__icon.css);
+@import url(../blocks/like-group/__icon/_active/like-group__icon_active.css);
+@import url(../blocks/like-group/like-group.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
