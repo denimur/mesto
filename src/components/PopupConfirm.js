@@ -7,10 +7,6 @@ export default class PopupConfirm extends Popup {
 		this._handleFormSubmit = handleFormSubmit;
 	}
 
-	_handleConfirm = () => {
-
-	}
-
 	setEventListeners() {
 		super.setEventListeners()
 		this._formElement.addEventListener('submit', (evt) => this._handleFormSubmit(evt, this._id))

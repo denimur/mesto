@@ -10,6 +10,7 @@ export const cardPopupSelector = '.popup_type_card';
 export const imagePopupSelector = '.popup_type_image';
 export const userFormSelector = '.form_type_user'; 
 export const cardFormSelector = '.form_type_card'; 
+export const avatarFormSelector = '.form_type_avatar';
 
 export const cardsElement = document.querySelector('.cards');
 export const cardListSelector = '.cards';

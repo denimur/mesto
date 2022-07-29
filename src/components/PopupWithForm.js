@@ -10,12 +10,18 @@ export default class PopupWithForm extends Popup {
 		this._handleFormSubmit = handleFormSubmit;
 	}
 
+	_renderBtnText(text) {
+		if (text === 'Создать') {
+			return text.slice(0, 5) + 'ю...' 
+		}
+		if (text === 'Сохранить') {
+			return text.slice(0, 6) + 'яю...'
+		}
+	}
+
 	renderLoading(isLoading) {
 		if (isLoading) {
-			this._formButton.textContent = 'Сохраняю...'
-		}
-		else {
-			this._formButton.textContent = 'Сохранить'
+			this._formButton.textContent = this._renderBtnText(this._formButton.textContent)
 		}
 	}
 	

@@ -4,6 +4,7 @@ import {
 	cardTemplateSelector,
 	cardFormSelector,
 	userFormSelector,
+	avatarFormSelector,
 	imagePopupSelector,
 	userPopupSelector,
 	cardPopupSelector,
@@ -27,8 +28,6 @@ const options = {
 	token: 'a7c510e0-05ad-459e-a0d1-31a92d4ef951',
 };
 
-// console.log(options)
-
 const api = new Api(options);
 
 const userFormValidator = new FormValidator(config, userFormSelector);
@@ -37,11 +36,15 @@ userFormValidator.enableValidation();
 const cardFormValidator = new FormValidator(config, cardFormSelector);
 cardFormValidator.enableValidation();
 
+const avatarFormValidator = new FormValidator(config, avatarFormSelector);
+avatarFormValidator.enableValidation();
+
 const popupWithImage = new PopupWithImage(imagePopupSelector);
 popupWithImage.setEventListeners();
 
 const userPopupWithForm = new PopupWithForm(userPopupSelector, submitUserForm);
 userPopupWithForm.setEventListeners();
+
 const userInfo = new UserInfo('.profile');
 
 
@@ -49,7 +52,7 @@ function renderUserInfo() {
 	api.getUserInfo()
 		.then(data => {
 			userInfo.setUserInfo(data);
-			// console.log(data)
+			userInfo.setUserAvatar(data.avatar);
 		})
 }
 renderUserInfo();
@@ -59,7 +62,7 @@ const handleCardClick = ({ name, link }) => {
 }
 
 function createCard(cardItem) {
-	const card = new Card(cardItem, {userId: options.userId}, cardTemplateSelector, handleCardClick, handleConfirmPopupOpen, handlePutLike, handleDeleteLike, likesCount);
+	const card = new Card(cardItem, options.userId, cardTemplateSelector, handleCardClick, handleConfirmPopupOpen, handlePutLike, handleDeleteLike);
 	return card.generateCard();
 }
 
@@ -70,22 +73,19 @@ const cardListElement = new Section(item => {
 
 function renderCards() {
 	Promise.all([api.getUserInfo(), api.getInitialCards()])
-		.then(responses => {
-			options.userId = responses[0]._id;
-			cardListElement.renderItems(responses[1]);
-			console.log(responses[1])
+		.then(([user, initialCards]) => {
+			options.userId = user._id;
+			cardListElement.renderItems(initialCards);
 		})
 		.catch(err => console.log(`Error ${err}`))
 }
 renderCards()
 
-// cardListElement.renderItems(initialCards);
-
 const popupTypeConfirm = new PopupConfirm('.popup_type_confirm', submitConfirmForm);
 popupTypeConfirm.setEventListeners()
 
 function handleConfirmPopupOpen(id, remove) {
-// записываем данные в поля класса popupTypeConfirm
+// записываем id карточки в поле класса popupTypeConfirm
 	popupTypeConfirm._id = id;
 // ссылка на метод удаления карточки из DOM
 	popupTypeConfirm.remove = remove;
@@ -106,6 +106,7 @@ const popupTypeAvatar = new PopupWithForm('.popup_type_avatar', submitAvatarForm
 popupTypeAvatar.setEventListeners();
 
 function openAvatarPopup() {
+	avatarFormValidator.resetValidation()
 	popupTypeAvatar.open()
 }
 
@@ -134,43 +135,34 @@ function submitAvatarForm(evt, {avatarLink: avatar}) {
 		.then(user => userInfo.setUserAvatar(user.avatar))
 		.catch(err => console.log(err))
 		.finally(() => popupTypeAvatar.renderLoading(false))
-	console.log(avatar);
-	console.log(userInfo.getUserInfo())
 
 	popupTypeAvatar.close();
 }
 
 function submitUserForm(evt, {userName: name, userActivity: about }) {
 	evt.preventDefault();
-
-	api.editUserInfo({name, about})
-	userInfo.setUserInfo({ name, about });
+	userPopupWithForm.renderLoading(true)
+	api.editUserInfo({ name, about })
+		.then(userInfo.setUserInfo({ name, about }))
+		.catch(err => console.log(err))
+		.finally(() => userPopupWithForm.renderLoading(false))
 	userPopupWithForm.close();
 }
 
 function submitCardForm(evt, {cardName: name, cardLink: link}) {
 	evt.preventDefault();
+	cardPopupWithForm.renderLoading(true)
 	const card = {name, link} 
-
 	api.addCard(card)
 		.then(card => cardListElement.prependItem(createCard(card)))
-	
+		.catch(err => console.log(err))
+		.finally(() => cardPopupWithForm.renderLoading(false))
 	cardPopupWithForm.close();
 }
 
 editUserInfoBtn.addEventListener('click', openUserPopup);
 editUserAvatarBtn.addEventListener('click', openAvatarPopup);
 addBtn.addEventListener('click', openCardPopup);
-
-const likesCount = (card) => {
-	return new Promise((res, rej) => {
-		res(card)
-	});
-}
-
-const p = new Promise((res, rej) => {
-	likesCount()
-})
 
 function handlePutLike(cardId) {
 	return api.likeCard(cardId)
@@ -179,4 +171,3 @@ function handlePutLike(cardId) {
 function handleDeleteLike(cardId) {
 	return api.dislikeCard(cardId)
 }
-

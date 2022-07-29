@@ -1,7 +1,7 @@
 export default class Card {
 	constructor(
 		data,
-		{ userId },
+		userId,
 		templateSelector,
 		handleCardClick,
 		handleConfirmPopupOpen,

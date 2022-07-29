@@ -66,18 +66,19 @@
 
 		<div class="popup popup_type_avatar">
 			<div class="popup__container">
-				<form class="form form_type_avatar" name="avatar-form">
+				<form class="form form_type_avatar" name="avatar-form" novalidate>
 					<h2 class="form__heading">Обновить аватар</h2>
 					<fieldset class="form__inputs">
 						<label class="form__field">
 							<input 
 								id="avatar-input"
 								name="avatar-link"
-								class="form__item"
+								class="form__item form__item_el_avatar"
 								type="url"
 								placeholder="https://somewebsite.com/someimage.jpg"
+								required
 							>
-							<span class="user-name-input-error form__item-error"></span>
+							<span class="avatar-input-error form__item-error"></span>
 						</label>
 					</fieldset>
 					<fieldset class="form__handlers">
