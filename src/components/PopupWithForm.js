@@ -7,21 +7,20 @@ export default class PopupWithForm extends Popup {
 		this._formElement = this._popupElement.querySelector('.form');
 		this.inputList = this._formElement.querySelectorAll('.form__item');
 		this._formButton = this._formElement.querySelector('.form__button');
+		this._buttonText = this._formButton.textContent;
 		this._handleFormSubmit = handleFormSubmit;
 	}
 
 	_renderBtnText(text) {
-		if (text === 'Создать') {
-			return text.slice(0, 5) + 'ю...' 
-		}
-		if (text === 'Сохранить') {
-			return text.slice(0, 6) + 'яю...'
-		}
+		return text.slice(0, 5) + (text.length > 7 ? 'няю...' : 'ю...')
 	}
 
 	renderLoading(isLoading) {
 		if (isLoading) {
-			this._formButton.textContent = this._renderBtnText(this._formButton.textContent)
+			this._formButton.textContent = this._renderBtnText(this._buttonText)
+		}
+		else {
+			this._formButton.textContent = this._buttonText;
 		}
 	}
 	

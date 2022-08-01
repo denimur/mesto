@@ -1,23 +1,23 @@
-export const profileElement = document.querySelector('.profile')
-export const editUserInfoBtn = profileElement.querySelector('.profile__edit-btn');
-export const editUserAvatarBtn = profileElement.querySelector('.profile__overlay');
-export const addBtn = profileElement.querySelector('.profile__add-btn');
-export const profileNameSelector = '.profile__name';
-export const profileActivitySelectior = '.profile__activity';
-
 export const userPopupSelector = '.popup_type_user';
 export const cardPopupSelector = '.popup_type_card';
 export const imagePopupSelector = '.popup_type_image';
 export const userFormSelector = '.form_type_user'; 
 export const cardFormSelector = '.form_type_card'; 
 export const avatarFormSelector = '.form_type_avatar';
-
+export const avatarPopupSelector = '.popup_type_avatar';
+export const confirmPopupSelector = '.popup_type_confirm';
+export const profileSelector = '.profile';
 export const cardsElement = document.querySelector('.cards');
 export const cardListSelector = '.cards';
 export const cardTemplateSelector = '#card-template';
 export const myCardTemplateSelector = '#my-card-template';
 
 export const cardDeleteBtn = document.querySelector('.card__delete-btn');
+
+export const options = {
+	cohortId: 'cohort-46',
+	token: 'a7c510e0-05ad-459e-a0d1-31a92d4ef951',
+};
 
 export const config = {
   formSelector: '.form',
