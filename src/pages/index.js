@@ -53,16 +53,6 @@ cardPopupWithForm.setEventListeners();
 const userInfo = new UserInfo(profileSelector, openCardPopup, openAvatarPopup, openUserPopup);
 userInfo.setEventListeners();
 
-function renderUserInfo() {
-	api.getUserInfo()
-		.then(data => {
-			userInfo.setUserInfo(data);
-			userInfo.setUserAvatar(data.avatar);
-		})
-		.catch(err => console.log(err))
-}
-renderUserInfo();
-
 function createCard(cardItem) {
 	const card = new Card(cardItem, options.userId, cardTemplateSelector, handleCardClick, handleConfirmPopupOpen, handlePutLike, handleDeleteLike);
 	return card.generateCard();
@@ -76,6 +66,8 @@ const cardListElement = new Section(item => {
 function renderCards() {
 	Promise.all([api.getUserInfo(), api.getInitialCards()])
 		.then(([user, initialCards]) => {
+			userInfo.setUserInfo(user);
+			userInfo.setUserAvatar(user.avatar);
 			options.userId = user._id;
 			cardListElement.renderItems(initialCards);
 		})
@@ -98,9 +90,9 @@ function submitConfirmForm(evt, cardId) {
 	popupTypeConfirm.renderLoading(true)
 	api.deleteCard(cardId)
 		.then(popupTypeConfirm.remove())
+		.then(popupTypeConfirm.close())
 		.catch(err => console.log(err))
 		.finally(() => popupTypeConfirm.renderLoading(false))
-	popupTypeConfirm.close()
 }
 
 function openAvatarPopup() {
@@ -128,10 +120,9 @@ function submitAvatarForm(evt, {avatarLink: avatar}) {
 	popupTypeAvatar.renderLoading(true)
 	api.editUserAvatar({ avatar })
 		.then(user => userInfo.setUserAvatar(user.avatar))
+		.then(popupTypeAvatar.close())
 		.catch(err => console.log(err))
 		.finally(() => popupTypeAvatar.renderLoading(false))
-
-	popupTypeAvatar.close();
 }
 
 function submitUserForm(evt, {userName: name, userActivity: about }) {
@@ -139,9 +130,9 @@ function submitUserForm(evt, {userName: name, userActivity: about }) {
 	userPopupWithForm.renderLoading(true)
 	api.editUserInfo({ name, about })
 		.then(userInfo.setUserInfo({ name, about }))
+		.then(userPopupWithForm.close())
 		.catch(err => console.log(err))
 		.finally(() => userPopupWithForm.renderLoading(false))
-	userPopupWithForm.close();
 }
 
 function submitCardForm(evt, {cardName: name, cardLink: link}) {
@@ -150,9 +141,9 @@ function submitCardForm(evt, {cardName: name, cardLink: link}) {
 	const card = {name, link} 
 	api.addCard(card)
 		.then(card => cardListElement.prependItem(createCard(card)))
+		.then(cardPopupWithForm.close())
 		.catch(err => console.log(err))
 		.finally(() => cardPopupWithForm.renderLoading(false))
-	cardPopupWithForm.close();
 }
 
 function handlePutLike(cardId) {

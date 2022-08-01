@@ -5,12 +5,19 @@ export default class Api {
 		this._url = 'https://mesto.nomoreparties.co/v1';
 	}
 
+	_getResponseData(res) {
+    if (!res.ok) {
+			return Promise.reject(`Ошибка: ${res.status}`);
+    }
+    return res.json();
+	}
+
 	getInitialCards() {
 		return fetch(`${this._url}/${this.cohortId}/cards`, {
 		  headers: {
 				authorization: this.token
 			}
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	addCard(card) {
@@ -21,7 +28,7 @@ export default class Api {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({name: card.name, link: card.link})
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	deleteCard(cardId) {
@@ -31,7 +38,7 @@ export default class Api {
 				authorization: this.token,
 				'Content-Type': 'application/json'
 			}
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	likeCard(cardId) {
@@ -41,7 +48,7 @@ export default class Api {
 				authorization: this.token,
 				'Content-Type': 'application/json'
 			}
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	dislikeCard(cardId) {
@@ -51,7 +58,7 @@ export default class Api {
 				authorization: this.token,
 				'Content-Type': 'application/json'
 			}
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	getUserInfo() {
@@ -59,7 +66,7 @@ export default class Api {
 		  headers: {
 				authorization: this.token
 			}
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	editUserInfo({name, about}) {
@@ -73,7 +80,7 @@ export default class Api {
 				name,
 				about
 			})
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 
 	editUserAvatar({avatar}) {
@@ -84,6 +91,6 @@ export default class Api {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({avatar})
-		}).then(res => res.ok ? res.json() : Promise.reject(res.status))
+		}).then(res => this._getResponseData(res))
 	}
 }

@@ -53,16 +53,20 @@ export default class Card {
 	_handleImageClick = () => {
 		this._handleCardClick({ name: this._name, link: this._link });
 	}
+	
+	_renderLike = (card) => {
+		this._cardLikeCount.textContent = card.likes.length
+		this._cardLikeButton.classList.toggle('like-group__icon_active')
+	}
 
 	_handleLikeCard = () => {
-		this._cardLikeButton.classList.toggle('like-group__icon_active');
-		if (this._isLiked()) {
+		if (!this._isLiked()) {
 			this._handlePutLike(this._id)
-				.then(card => this._cardLikeCount.textContent = card.likes.length)
+				.then(card => this._renderLike(card))
 		}
 		else {
 			this._handleDeleteLike(this._id)
-				.then(card => this._cardLikeCount.textContent = card.likes.length)
+				.then(card => this._renderLike(card))
 		}
 	}
 
